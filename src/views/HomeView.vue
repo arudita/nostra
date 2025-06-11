@@ -1,8 +1,93 @@
+<script setup>
+import { onBeforeUnmount, onMounted, ref } from 'vue';
+
+const currentSlide = ref(0);
+const transitionDirection = ref('slide');
+const autoPlayInterval = ref(null);
+const autoPlayDuration = ref(5000);
+const slides = [
+    { image: '/images/hero-image-1.jpg', alt: 'Hero image 1' },
+    { image: '/images/hero-image-2.jpg', alt: 'Hero image 2' },
+    { image: '/images/hero-image-3.jpg', alt: 'Hero image 3' }
+];
+
+const goToNext = () => {
+    transitionDirection.value = 'slide-next';
+    currentSlide.value = (currentSlide.value + 1) % slides.length;
+    // resetAutoPlay();
+}
+const goToPrev = () => {
+    transitionDirection.value = 'slide-prev';
+    currentSlide.value = (currentSlide.value - 1 + slides.length) % slides.length;
+    // resetAutoPlay();
+}
+const goToSlide = (index) => {
+    transitionDirection.value = index > currentSlide ? 'slide-next' : 'slide-prev';
+    currentSlide.value = index;
+    // resetAutoPlay();
+}
+const startAutoPlay = () => {
+    autoPlayInterval.value = setInterval(goToNext, autoPlayDuration.value);
+}
+const resetAutoPlay = () => {
+    stopAutoPlay();
+    startAutoPlay();
+}
+const stopAutoPlay = () => {
+    if (autoPlayInterval.value) {
+        clearInterval(autoPlayInterval.value);
+    }
+}
+onMounted(() => {
+    // startAutoPlay();
+    // Preload images
+    slides.forEach(slide => {
+      new Image().src = slide.image
+    })
+})
+onBeforeUnmount(() => {
+    stopAutoPlay();
+})
+</script>
+
 <template>
     <div class="relative flex flex-col w-full px-12 md:px-24">
         <!-- Hero Section -->
-        <figure class="relative w-full h-[60dvh] md:h-[80dvh] rounded-lg overflow-hidden border border-gray-300 mb-20">
-            <img src="" alt="hero images" class="object-cover object-center w-full h-full min-w-full">
+        <figure class="relative w-full h-[60dvh] md:h-[80dvh] rounded-lg overflow-hidden border border-gray-300 mb-20 group">
+            <!-- Slides Container with Seamless Transition -->
+            <div class="relative w-full h-full overflow-hidden">
+                <transition :name="transitionDirection" mode="out-in">
+                    <!-- Current Slide -->
+                    <div :key="currentSlide" class="absolute inset-0">
+                        <img :src="slides[currentSlide].image" :alt="slides[currentSlide].alt" class="object-cover object-center w-full h-full min-w-full">
+                    </div>
+                </transition>
+                <!-- Preload Next Slide (hidden) -->
+                <img v-for="(slide, index) in slides" :key="'preload-'+index" :src="slide.image" alt="" class="hidden">
+            </div>
+            <!-- Navigation Controls -->
+            <div class="absolute inline-flex items-center top-6 right-6 bg-gray-50 z-10 border border-gray-300 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <button @click="goToPrev" class="group cursor-pointer p-4 hover:bg-gray-100 transition-colors duration-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5 stroke-gray-300 group-hover:stroke-gray-600 transition-colors duration-200">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                    </svg>
+                </button>
+                <div class="inline-block min-h-full w-0.5 self-stretch bg-gray-100"></div>
+                <button @click="goToNext" class="group cursor-pointer p-4 hover:bg-gray-100 transition-colors duration-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5 stroke-gray-300 group-hover:stroke-gray-600 transition-colors duration-200">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                    </svg>
+                </button>
+            </div>
+             <!-- Animated Slide Indicators -->
+            <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex items-center space-x-2">
+                <button v-for="(slide, index) in slides" :key="index" @click="goToSlide(index)" class="rounded-full transition-all duration-300 relative overflow-hidden" :class="{'w-2.5 h-2.5 bg-white': currentSlide === index, 'w-2 h-2 bg-white opacity-50': currentSlide !== index}">
+                    <span v-if="currentSlide === index" class="absolute top-0 left-0 h-full bg-white" :style="{ animation: `progress ${autoPlayDuration}ms linear` }"></span>
+                </button>
+            </div>
+        </figure>
+        <!-- <figure class="relative w-full h-[60dvh] md:h-[80dvh] rounded-lg overflow-hidden border border-gray-300 mb-20">
+            <img src="/images/hero-image-2.jpg" alt="hero images" class="object-cover object-center w-full h-full min-w-full">
             <div class="absolute inline-flex items-center top-6 right-6 bg-gray-50 z-10 border border-gray-300 rounded-lg">
                 <button class="group cursor-pointer p-4">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5 stroke-gray-300 group-hover:stroke-gray-600">
@@ -16,7 +101,7 @@
                     </svg>
                 </button>
             </div>
-        </figure>
+        </figure> -->
         <!-- Section #1 -->
         <div class="relative w-full mb-20">
             <div class="relative inline-flex w-full h-full justify-between items-center mb-10">
@@ -236,3 +321,44 @@
         </div>
     </div>
 </template>
+
+<style scoped>
+/* Seamless Slide Transition */
+.slide-next-enter-active,
+.slide-next-leave-active,
+.slide-prev-enter-active,
+.slide-prev-leave-active {
+  transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.5, 1);
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.slide-next-enter-from {
+  transform: translateX(100%);
+}
+
+.slide-next-leave-to {
+  transform: translateX(-100%);
+}
+
+.slide-prev-enter-from {
+  transform: translateX(-100%);
+}
+
+.slide-prev-leave-to {
+  transform: translateX(100%);
+}
+
+/* Progress Bar Animation */
+@keyframes progress {
+  from { width: 50%; }
+  to { width: 100%; }
+}
+
+/* Ensure no gaps during transition */
+figure {
+  backface-visibility: hidden;
+  transform: translate3d(0,0,0);
+}
+</style>
