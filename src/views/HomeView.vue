@@ -1,33 +1,29 @@
 <script setup>
-import { onBeforeUnmount, onMounted, ref } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 
-const currentSlide = ref(0);
-const transitionDirection = ref('slide');
+// Hero Section
+const currentHeroSlide = ref(0);
 const autoPlayInterval = ref(null);
 const autoPlayDuration = ref(5000);
-const slides = [
-    { image: '/images/hero-image-1.jpg', alt: 'Hero image 1' },
-    { image: '/images/hero-image-2.jpg', alt: 'Hero image 2' },
-    { image: '/images/hero-image-3.jpg', alt: 'Hero image 3' }
+const slides_hero = [
+    { image: '/images/hero-image-1.jpg', alt: 'Hero image 1', text: 'First' },
+    { image: '/images/hero-image-2.jpg', alt: 'Hero image 2', text: 'Second' },
+    { image: '/images/hero-image-3.jpg', alt: 'Hero image 3', text: 'Third' }
 ];
-
-const goToNext = () => {
-    transitionDirection.value = 'slide-next';
-    currentSlide.value = (currentSlide.value + 1) % slides.length;
-    // resetAutoPlay();
+const goToNextHero = () => {
+    currentHeroSlide.value = (currentHeroSlide.value + 1) % slides_hero.length;
+    resetAutoPlay();
 }
-const goToPrev = () => {
-    transitionDirection.value = 'slide-prev';
-    currentSlide.value = (currentSlide.value - 1 + slides.length) % slides.length;
-    // resetAutoPlay();
+const goToPrevHero = () => {
+    currentHeroSlide.value = (currentHeroSlide.value - 1 + slides_hero.length) % slides_hero.length;
+    resetAutoPlay();
 }
-const goToSlide = (index) => {
-    transitionDirection.value = index > currentSlide ? 'slide-next' : 'slide-prev';
-    currentSlide.value = index;
-    // resetAutoPlay();
+const goToHeroSlide = (index) => {
+    currentHeroSlide.value = index;
+    resetAutoPlay();
 }
 const startAutoPlay = () => {
-    autoPlayInterval.value = setInterval(goToNext, autoPlayDuration.value);
+    autoPlayInterval.value = setInterval(goToNextHero, autoPlayDuration.value);
 }
 const resetAutoPlay = () => {
     stopAutoPlay();
@@ -38,42 +34,86 @@ const stopAutoPlay = () => {
         clearInterval(autoPlayInterval.value);
     }
 }
+
+// Featured Products Section
+const currentProductSlide = ref(0);
+const windowWidth = ref(window.innerWidth);
+const productsWrapper = ref(null);
+const slide_products = [
+    {
+        image: '/images/armchair-2.png', alt: 'Product image 1', url: '#', name: '', sale: true, price_final: 58, price_initial: 65
+    },
+    {
+        image: '/images/sofa-1.png', alt: 'Product image 2', url: '#', name: '', sale: false, price_final: 58, price_initial: 0
+    },
+    {
+        image: '/images/sideboard-1.png', alt: 'Product image 3', url: '#', name: '', sale: true, price_final: 32, price_initial: 38
+    },
+    {
+        image: '/images/sofa-2.png', alt: 'Product image 4', url: '#', name: '', sale: true, price_final: 49, price_initial: 56
+    },
+    {
+        image: '/images/armchair-1.png', alt: 'Product image 5', url: '#', name: '', sale: false, price_final: 58, price_initial: 0
+    },
+    {
+        image: '/images/daybed-1.png', alt: 'Product image 6', url: '#', name: '', sale: false, price_final: 58, price_initial: 0
+    },
+];
+const itemsPerSlide = computed(() => windowWidth.value < 768 ? 2 : 3);
+const slideCount = computed(() => Math.ceil(products.value.length / itemsPerSlide.value));
+const maxSlide = computed(() => slideCount.value - 1);
+const translateX = computed(() => currentProductSlide.value * 100);
+
+const goToNextProduct = () => {
+    currentProductSlide.value = (currentProductSlide.value + 1) % slide_products.length;
+}
+const goToPrevProduct = () => {
+    currentProductSlide.value = (currentProductSlide.value - 1 + slide_products.length) % slide_products.length;
+}
+const handleResize = () => {
+  windowWidth.value = window.innerWidth;
+  currentProductSlide.value = 0;
+};
+
 onMounted(() => {
-    // startAutoPlay();
-    // Preload images
-    slides.forEach(slide => {
-      new Image().src = slide.image
-    })
+    startAutoPlay();
+    slides_hero.forEach(slide => {
+        new Image().src = slide.image;
+    });
+    window.addEventListener('resize', handleResize);
 })
 onBeforeUnmount(() => {
     stopAutoPlay();
+    window.removeEventListener('resize', handleResize);
 })
 </script>
 
 <template>
     <div class="relative flex flex-col w-full px-12 md:px-24">
         <!-- Hero Section -->
-        <figure class="relative w-full h-[60dvh] md:h-[80dvh] rounded-lg overflow-hidden border border-gray-300 mb-20 group">
-            <!-- Slides Container with Seamless Transition -->
+        <figure class="group relative w-full h-[60dvh] md:h-[80dvh] rounded-lg overflow-hidden border border-gray-300 mb-20">
             <div class="relative w-full h-full overflow-hidden">
-                <transition :name="transitionDirection" mode="out-in">
+                <transition name="fade" mode="out-in">
                     <!-- Current Slide -->
-                    <div :key="currentSlide" class="absolute inset-0">
-                        <img :src="slides[currentSlide].image" :alt="slides[currentSlide].alt" class="object-cover object-center w-full h-full min-w-full">
+                    <div :key="currentHeroSlide" class="absolute inset-0">
+                        <img :src="slides_hero[currentHeroSlide].image" :alt="slides_hero[currentHeroSlide].alt" class="object-cover object-center w-full h-full min-w-full grayscale-50">
+                        <div class="absolute inset-0 flex justext-center items-center w-full">
+                            <h1 class="text-7xl font-bold text-gray-800 mx-auto">{{ slides_hero[currentHeroSlide].text }}</h1>
+                        </div>
                     </div>
                 </transition>
                 <!-- Preload Next Slide (hidden) -->
-                <img v-for="(slide, index) in slides" :key="'preload-'+index" :src="slide.image" alt="" class="hidden">
+                <img v-for="(slide, index) in slides_hero" :key="'preload-'+index" :src="slide.image" alt="" class="hidden">
             </div>
             <!-- Navigation Controls -->
-            <div class="absolute inline-flex items-center top-6 right-6 bg-gray-50 z-10 border border-gray-300 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <button @click="goToPrev" class="group cursor-pointer p-4 hover:bg-gray-100 transition-colors duration-200">
+            <div class="absolute inline-flex items-center top-6 right-6 bg-white z-10 border border-gray-300 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity overflow-hidden duration-300">
+                <button @click="goToPrevHero" class="group cursor-pointer p-4 hover:bg-gray-100 transition-colors duration-200">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5 stroke-gray-300 group-hover:stroke-gray-600 transition-colors duration-200">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
                     </svg>
                 </button>
                 <div class="inline-block min-h-full w-0.5 self-stretch bg-gray-100"></div>
-                <button @click="goToNext" class="group cursor-pointer p-4 hover:bg-gray-100 transition-colors duration-200">
+                <button @click="goToNextHero" class="group cursor-pointer p-4 hover:bg-gray-100 transition-colors duration-200">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5 stroke-gray-300 group-hover:stroke-gray-600 transition-colors duration-200">
                         <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
                     </svg>
@@ -81,27 +121,11 @@ onBeforeUnmount(() => {
             </div>
              <!-- Animated Slide Indicators -->
             <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex items-center space-x-2">
-                <button v-for="(slide, index) in slides" :key="index" @click="goToSlide(index)" class="rounded-full transition-all duration-300 relative overflow-hidden" :class="{'w-2.5 h-2.5 bg-white': currentSlide === index, 'w-2 h-2 bg-white opacity-50': currentSlide !== index}">
-                    <span v-if="currentSlide === index" class="absolute top-0 left-0 h-full bg-white" :style="{ animation: `progress ${autoPlayDuration}ms linear` }"></span>
+                <button v-for="(slide, index) in slides_hero" :key="index" @click="goToHeroSlide(index)" class="rounded-full transition-all duration-300 relative overflow-hidden cursor-pointer" :class="{'w-2.5 h-2.5 bg-white': currentHeroSlide === index, 'w-2 h-2 bg-white opacity-50': currentHeroSlide !== index}">
+                    <span v-if="currentHeroSlide === index" class="absolute top-0 left-0 h-full bg-white" :style="{ animation: `progress ${autoPlayDuration}ms linear` }"></span>
                 </button>
             </div>
         </figure>
-        <!-- <figure class="relative w-full h-[60dvh] md:h-[80dvh] rounded-lg overflow-hidden border border-gray-300 mb-20">
-            <img src="/images/hero-image-2.jpg" alt="hero images" class="object-cover object-center w-full h-full min-w-full">
-            <div class="absolute inline-flex items-center top-6 right-6 bg-gray-50 z-10 border border-gray-300 rounded-lg">
-                <button class="group cursor-pointer p-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5 stroke-gray-300 group-hover:stroke-gray-600">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
-                    </svg>
-                </button>
-                <div class="inline-block min-h-full w-0.5 self-stretch bg-gray-100"></div>
-                <button class="group cursor-pointer p-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5 stroke-gray-300 group-hover:stroke-gray-600">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-                    </svg>
-                </button>
-            </div>
-        </figure> -->
         <!-- Section #1 -->
         <div class="relative w-full mb-20">
             <div class="relative inline-flex w-full h-full justify-between items-center mb-10">
@@ -236,129 +260,123 @@ onBeforeUnmount(() => {
                 <h3 class="text-3xl font-semibold">
                     Featured Products
                 </h3>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-15">
-                <div class="group block w-full h-full">
-                    <a href="#" class="relative w-full h-full aspect-square">
-                        <figure class=" border border-gray-300 group-hover:border-gray-500 transition-colors rounded-lg overflow-hidden">
-                            <img src="/images/armchair-2.png" alt="Bed" class="object-cover object-center w-full h-auto group-hover:scale-105 transition-transform">
-                        </figure>
-                        <div class="absolute top-0 left-0 right-0 px-3 pt-3">
-                            <div class="flex justify-start items-center w-fit h-full bg-red-600 border border-gray-500 transition-colors py-1.5 px-2.5 rounded-lg">
-                                <span class="text-white text-sm font-semibold">SALE</span>
-                            </div>
-                        </div>
-                    </a>
-                    <div class="flex justify-between w-full mt-5">
-                        <div class="w-full overflow-hidden">
-                            <a href="#">
-                                <p class="w-5/6 font-normal text-sm text-gray-600 truncate mb-2">Armchair Soft Foarm</p>
-                            </a>
-                            <div class="relative inline-flex items-start">
-                                <span class="font-semibold text-2xl mr-1">$58</span>
-                                <span class="font-normal text-sm text-gray-400 line-through pt-0.5">$65</span>
-                            </div>
-                        </div>
-                        <button class="block h-fit bg-gray-800 rounded-lg p-4 cursor-pointer hover:bg-gray-800/95 transition-colors">
-                            <svg class="size-5 fill-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
-                                <path d="M0 24C0 10.7 10.7 0 24 0L69.5 0c22 0 41.5 12.8 50.6 32l411 0c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3l-288.5 0 5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5L488 336c13.3 0 24 10.7 24 24s-10.7 24-24 24l-288.3 0c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5L24 48C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"/>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-                <div class="group block w-full h-full">
-                    <a href="#" class="relative w-full h-full aspect-square">
-                        <figure class=" border border-gray-300 group-hover:border-gray-500 transition-colors rounded-lg overflow-hidden">
-                            <img src="/images/sofa-1.png" alt="Bed" class="object-cover object-center w-full h-auto group-hover:scale-105 transition-transform">
-                        </figure>
-                    </a>
-                    <div class="flex justify-between w-full mt-5">
-                        <div class="w-full overflow-hidden">
-                            <a href="#">
-                                <p class="w-5/6 font-normal text-sm text-gray-600 truncate mb-2">Sofa Soft Foam</p>
-                            </a>
-                            <div class="relative inline-flex items-start">
-                                <span class="font-semibold text-2xl mr-1">$58</span>
-                            </div>
-                        </div>
-                        <button class="block h-fit bg-gray-800 rounded-lg p-4 cursor-pointer hover:bg-gray-800/95 transition-colors">
-                            <svg class="size-5 fill-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
-                                <path d="M0 24C0 10.7 10.7 0 24 0L69.5 0c22 0 41.5 12.8 50.6 32l411 0c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3l-288.5 0 5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5L488 336c13.3 0 24 10.7 24 24s-10.7 24-24 24l-288.3 0c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5L24 48C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"/>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-                <div class="group block w-full h-full">
-                    <a href="#" class="relative w-full h-full aspect-square">
-                        <figure class=" border border-gray-300 group-hover:border-gray-500 transition-colors rounded-lg overflow-hidden">
-                            <img src="/images/sideboard-1.png" alt="Bed" class="object-cover object-center w-full h-auto group-hover:scale-105 transition-transform">
-                        </figure>
-                        <div class="absolute top-0 left-0 right-0 px-3 pt-3">
-                            <div class="flex justify-start items-center w-fit h-full bg-red-600 border border-gray-500 transition-colors py-1.5 px-2.5 rounded-lg">
-                                <span class="text-white text-sm font-semibold">SALE</span>
-                            </div>
-                        </div>
-                    </a>
-                    <div class="flex justify-between w-full mt-5">
-                        <div class="w-full overflow-hidden">
-                            <a href="#">
-                                <p class="w-5/6 font-normal text-sm text-gray-600 truncate mb-2">Wooden Sideboard 3 Storage</p>
-                            </a>
-                            <div class="relative inline-flex items-start">
-                                <span class="font-semibold text-2xl mr-1">$58</span>
-                                <span class="font-normal text-sm text-gray-400 line-through pt-0.5">$65</span>
-                            </div>
-                        </div>
-                        <button class="block h-fit bg-gray-800 rounded-lg p-4 cursor-pointer hover:bg-gray-800/95 transition-colors">
-                            <svg class="size-5 fill-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
-                                <path d="M0 24C0 10.7 10.7 0 24 0L69.5 0c22 0 41.5 12.8 50.6 32l411 0c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3l-288.5 0 5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5L488 336c13.3 0 24 10.7 24 24s-10.7 24-24 24l-288.3 0c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5L24 48C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"/>
-                            </svg>
-                        </button>
-                    </div>
+                <div class="relative inline-flex items-center bg-white border border-gray-300 rounded-lg">
+                    <button @click="goToNextProduct" class="group cursor-pointer p-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5 stroke-gray-300 group-hover:stroke-gray-600">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                        </svg>
+                    </button>
+                    <div class="inline-block min-h-full w-0.5 self-stretch bg-gray-100"></div>
+                    <button @click="goToPrevProduct" class="group cursor-pointer p-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5 stroke-gray-300 group-hover:stroke-gray-600">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                        </svg>
+                    </button>
                 </div>
             </div>
-            <div class=""></div>
+            <div class="relative overflow-hidden">
+                <div ref="productsWrapper" class="grid grid-cols-2 md:grid-cols-3 gap-6 mb-15 transition-transform duration-300 ease-in-out" :style="{ transform: `translateX(-${translateX}%)` }">
+                    <div v-for="(product, index) in slide_products" :key="index" class="group block w-full h-full">
+                        <a href="#" class="relative w-full h-full aspect-square">
+                            <figure class=" border border-gray-300 group-hover:border-gray-500 transition-colors rounded-lg overflow-hidden">
+                                <img :src="product.image" :alt="product.name" class="object-cover object-center w-full h-auto group-hover:scale-105 transition-transform">
+                            </figure>
+                            <div v-if="product.sale" class="absolute top-0 left-0 right-0 px-3 pt-3">
+                                <div class="flex justify-start items-center w-fit h-full bg-red-600 border border-gray-500 transition-colors py-1.5 px-2.5 rounded-lg">
+                                    <span class="text-white text-sm font-semibold">SALE</span>
+                                </div>
+                            </div>
+                        </a>
+                        <div class="flex justify-between w-full mt-5">
+                            <div class="w-full overflow-hidden">
+                                <a href="#">
+                                    <p class="w-5/6 font-normal text-sm text-gray-600 truncate mb-2">{{ product.name }}</p>
+                                </a>
+                                <div class="relative inline-flex items-start">
+                                    <span class="font-semibold text-2xl mr-1">${{ product.price_final }}</span>
+                                    <span v-if="product.sale" class="font-normal text-sm text-gray-400 line-through pt-0.5">${{ product.price_initial }}</span>
+                                </div>
+                            </div>
+                            <button class="block h-fit bg-gray-800 rounded-lg p-4 cursor-pointer hover:bg-gray-800/95 transition-colors">
+                                <svg class="size-5 fill-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                                    <path d="M0 24C0 10.7 10.7 0 24 0L69.5 0c22 0 41.5 12.8 50.6 32l411 0c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3l-288.5 0 5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5L488 336c13.3 0 24 10.7 24 24s-10.7 24-24 24l-288.3 0c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5L24 48C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- <div class="group block w-full h-full">
+                        <a href="#" class="relative w-full h-full aspect-square">
+                            <figure class=" border border-gray-300 group-hover:border-gray-500 transition-colors rounded-lg overflow-hidden">
+                                <img src="/images/sofa-1.png" alt="Bed" class="object-cover object-center w-full h-auto group-hover:scale-105 transition-transform">
+                            </figure>
+                        </a>
+                        <div class="flex justify-between w-full mt-5">
+                            <div class="w-full overflow-hidden">
+                                <a href="#">
+                                    <p class="w-5/6 font-normal text-sm text-gray-600 truncate mb-2">Sofa Soft Foam</p>
+                                </a>
+                                <div class="relative inline-flex items-start">
+                                    <span class="font-semibold text-2xl mr-1">$58</span>
+                                </div>
+                            </div>
+                            <button class="block h-fit bg-gray-800 rounded-lg p-4 cursor-pointer hover:bg-gray-800/95 transition-colors">
+                                <svg class="size-5 fill-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                                    <path d="M0 24C0 10.7 10.7 0 24 0L69.5 0c22 0 41.5 12.8 50.6 32l411 0c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3l-288.5 0 5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5L488 336c13.3 0 24 10.7 24 24s-10.7 24-24 24l-288.3 0c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5L24 48C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="group block w-full h-full">
+                        <a href="#" class="relative w-full h-full aspect-square">
+                            <figure class=" border border-gray-300 group-hover:border-gray-500 transition-colors rounded-lg overflow-hidden">
+                                <img src="/images/sideboard-1.png" alt="Bed" class="object-cover object-center w-full h-auto group-hover:scale-105 transition-transform">
+                            </figure>
+                            <div class="absolute top-0 left-0 right-0 px-3 pt-3">
+                                <div class="flex justify-start items-center w-fit h-full bg-red-600 border border-gray-500 transition-colors py-1.5 px-2.5 rounded-lg">
+                                    <span class="text-white text-sm font-semibold">SALE</span>
+                                </div>
+                            </div>
+                        </a>
+                        <div class="flex justify-between w-full mt-5">
+                            <div class="w-full overflow-hidden">
+                                <a href="#">
+                                    <p class="w-5/6 font-normal text-sm text-gray-600 truncate mb-2">Wooden Sideboard 3 Storage</p>
+                                </a>
+                                <div class="relative inline-flex items-start">
+                                    <span class="font-semibold text-2xl mr-1">$58</span>
+                                    <span class="font-normal text-sm text-gray-400 line-through pt-0.5">$65</span>
+                                </div>
+                            </div>
+                            <button class="block h-fit bg-gray-800 rounded-lg p-4 cursor-pointer hover:bg-gray-800/95 transition-colors">
+                                <svg class="size-5 fill-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                                    <path d="M0 24C0 10.7 10.7 0 24 0L69.5 0c22 0 41.5 12.8 50.6 32l411 0c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3l-288.5 0 5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5L488 336c13.3 0 24 10.7 24 24s-10.7 24-24 24l-288.3 0c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5L24 48C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+            <div class="block w-1/3 h-1.5 mx-auto border border-gray-800 rounded-full">
+                <div class="block w-1/2 h-full bg-gray-800"></div>
+            </div>
         </div>
     </div>
 </template>
 
 <style scoped>
-/* Seamless Slide Transition */
-.slide-next-enter-active,
-.slide-next-leave-active,
-.slide-prev-enter-active,
-.slide-prev-leave-active {
-  transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.5, 1);
-  position: absolute;
-  width: 100%;
-  height: 100%;
+/* Slide Transition */
+.fade-enter-active {
+    transition: all 0.3s ease-out;
 }
-
-.slide-next-enter-from {
-  transform: translateX(100%);
+.fade-leave-active {
+    transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
 }
-
-.slide-next-leave-to {
-  transform: translateX(-100%);
+.fade-enter-from, .fade-leave-to {
+    opacity: 0;
 }
-
-.slide-prev-enter-from {
-  transform: translateX(-100%);
-}
-
-.slide-prev-leave-to {
-  transform: translateX(100%);
-}
-
 /* Progress Bar Animation */
 @keyframes progress {
-  from { width: 50%; }
-  to { width: 100%; }
-}
-
-/* Ensure no gaps during transition */
-figure {
-  backface-visibility: hidden;
-  transform: translate3d(0,0,0);
+    from { width: 0%; }
+    to { width: 100%; }
 }
 </style>
