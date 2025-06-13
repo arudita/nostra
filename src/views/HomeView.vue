@@ -2,14 +2,14 @@
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 
 // Hero Section
-const currentHeroSlide = ref(0);
-const autoPlayInterval = ref(null);
-const autoPlayDuration = ref(5000);
 const slides_hero = [
     { image: '/images/hero-image-1.jpg', alt: 'Hero image 1', text: 'First' },
     { image: '/images/hero-image-2.jpg', alt: 'Hero image 2', text: 'Second' },
     { image: '/images/hero-image-3.jpg', alt: 'Hero image 3', text: 'Third' }
 ];
+const currentHeroSlide = ref(0);
+const autoPlayInterval = ref(null);
+const autoPlayDuration = ref(5000);
 const goToNextHero = () => {
     currentHeroSlide.value = (currentHeroSlide.value + 1) % slides_hero.length;
     resetAutoPlay();
@@ -36,33 +36,68 @@ const stopAutoPlay = () => {
 }
 
 // Featured Products Section
-const currentProductSlide = ref(0);
-const windowWidth = ref(window.innerWidth);
-const productsWrapper = ref(null);
 const slide_products = [
     {
-        image: '/images/armchair-2.png', alt: 'Product image 1', url: '#', name: '', sale: true, price_final: 58, price_initial: 65
+        id: 1, image: '/images/armchair-2.png', alt: 'Product image 1', url: '#', name: 'Wooden Armchair Soft Foam (Grey)', sale: true, price_final: 58, price_initial: 65
     },
     {
-        image: '/images/sofa-1.png', alt: 'Product image 2', url: '#', name: '', sale: false, price_final: 58, price_initial: 0
+        id: 2, image: '/images/sofa-1.png', alt: 'Product image 2', url: '#', name: 'Wooden Sofa with Soft Foam (Grey)', sale: false, price_final: 58, price_initial: 0
     },
     {
-        image: '/images/sideboard-1.png', alt: 'Product image 3', url: '#', name: '', sale: true, price_final: 32, price_initial: 38
+        id: 3, image: '/images/sideboard-1.png', alt: 'Product image 3', url: '#', name: 'Sideboard 3 Storage', sale: true, price_final: 32, price_initial: 38
     },
     {
-        image: '/images/sofa-2.png', alt: 'Product image 4', url: '#', name: '', sale: true, price_final: 49, price_initial: 56
+        id: 4, image: '/images/sofa-2.png', alt: 'Product image 4', url: '#', name: 'Wooden Sofa with Soft Foam (Peach)', sale: true, price_final: 49, price_initial: 56
     },
     {
-        image: '/images/armchair-1.png', alt: 'Product image 5', url: '#', name: '', sale: false, price_final: 58, price_initial: 0
+        id: 5, image: '/images/armchair-1.png', alt: 'Product image 5', url: '#', name: 'Armchair with Soft Foam', sale: false, price_final: 58, price_initial: 0
     },
     {
-        image: '/images/daybed-1.png', alt: 'Product image 6', url: '#', name: '', sale: false, price_final: 58, price_initial: 0
+        id: 6, image: '/images/daybed-1.png', alt: 'Product image 6', url: '#', name: 'Wooden Daybed', sale: false, price_final: 58, price_initial: 0
     },
 ];
-const itemsPerSlide = computed(() => windowWidth.value < 768 ? 2 : 3);
-const slideCount = computed(() => Math.ceil(products.value.length / itemsPerSlide.value));
+const currentProductSlide = ref(0);
+const windowWidth = ref(window.innerWidth);
+const isMobile = computed(() => windowWidth.value < 768);
+const itemsPerSlide = computed(() => isMobile.value ? 2 : 3);
+const slideCount = computed(() => Math.ceil(slide_products.length / itemsPerSlide.value));
 const maxSlide = computed(() => slideCount.value - 1);
-const translateX = computed(() => currentProductSlide.value * 100);
+const productSlide = computed(() => {
+    const result = [];
+    const itemsPerPage = itemsPerSlide.value;
+    
+    for (let i = 0; i < slide_products.length; i += itemsPerPage) {
+        result.push(slide_products.slice(i, i + itemsPerPage));
+    }
+    return result;
+});
+const carouselStyle = computed(() => {
+    return {
+        transform: `translateX(-${currentProductSlide.value * 100}%)`
+    }
+});
+const indicatorStyle = computed(() => {
+    const style = ref("");
+
+    if (isMobile.value) {
+        style.value = "w-1/3";
+        if (currentProductSlide.value == 0) {
+            style.value += " float-start";
+        } else if (currentProductSlide.value == 1) {
+            style.value += " mx-auto";
+        } else if (currentProductSlide.value == 2){
+            style.value += " float-end";
+        }
+    } else {
+        style.value = "w-1/2";
+        if (currentProductSlide.value == 0) {
+            style.value += " float-start";
+        } else if (currentProductSlide.value == 1){
+            style.value += " float-end";
+        }
+    }
+    return style.value;
+});
 
 const goToNextProduct = () => {
     currentProductSlide.value = (currentProductSlide.value + 1) % slide_products.length;
@@ -81,11 +116,11 @@ onMounted(() => {
         new Image().src = slide.image;
     });
     window.addEventListener('resize', handleResize);
-})
+});
 onBeforeUnmount(() => {
     stopAutoPlay();
     window.removeEventListener('resize', handleResize);
-})
+});
 </script>
 
 <template>
@@ -107,19 +142,19 @@ onBeforeUnmount(() => {
             </div>
             <!-- Navigation Controls -->
             <div class="absolute inline-flex items-center top-6 right-6 bg-white z-10 border border-gray-300 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity overflow-hidden duration-300">
-                <button @click="goToPrevHero" class="group cursor-pointer p-4 hover:bg-gray-100 transition-colors duration-200">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5 stroke-gray-300 group-hover:stroke-gray-600 transition-colors duration-200">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                <button @click="goToPrevHero" class="group/button cursor-pointer p-4 hover:bg-gray-100 transition-colors duration-200">
+                    <svg class="size-4 fill-gray-400 group-hover/button:fill-gray-600 transition-colors duration-200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                        <path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z"/>
                     </svg>
                 </button>
                 <div class="inline-block min-h-full w-0.5 self-stretch bg-gray-100"></div>
-                <button @click="goToNextHero" class="group cursor-pointer p-4 hover:bg-gray-100 transition-colors duration-200">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5 stroke-gray-300 group-hover:stroke-gray-600 transition-colors duration-200">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                <button @click="goToNextHero" class="group/button cursor-pointer p-4 hover:bg-gray-100 transition-colors duration-200">
+                    <svg class="size-4 fill-gray-400 group-hover/button:fill-gray-600 transition-colors duration-200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                        <path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/>
                     </svg>
                 </button>
             </div>
-             <!-- Animated Slide Indicators -->
+            <!-- Animated Slide Indicators -->
             <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex items-center space-x-2">
                 <button v-for="(slide, index) in slides_hero" :key="index" @click="goToHeroSlide(index)" class="rounded-full transition-all duration-300 relative overflow-hidden cursor-pointer" :class="{'w-2.5 h-2.5 bg-white': currentHeroSlide === index, 'w-2 h-2 bg-white opacity-50': currentHeroSlide !== index}">
                     <span v-if="currentHeroSlide === index" class="absolute top-0 left-0 h-full bg-white" :style="{ animation: `progress ${autoPlayDuration}ms linear` }"></span>
@@ -261,103 +296,98 @@ onBeforeUnmount(() => {
                     Featured Products
                 </h3>
                 <div class="relative inline-flex items-center bg-white border border-gray-300 rounded-lg">
-                    <button @click="goToNextProduct" class="group cursor-pointer p-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5 stroke-gray-300 group-hover:stroke-gray-600">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                    <button @click="goToPrevProduct" :disabled="currentProductSlide === 0" class="group cursor-pointer p-4" :class="{ 'opacity-50 cursor-not-allowed': currentProductSlide === 0 }">
+                        <svg class="size-4 fill-gray-400 group-hover:fill-gray-600" :class="{ 'fill-gray-600': currentProductSlide !== 0 }" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                            <path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z"/>
                         </svg>
                     </button>
                     <div class="inline-block min-h-full w-0.5 self-stretch bg-gray-100"></div>
-                    <button @click="goToPrevProduct" class="group cursor-pointer p-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5 stroke-gray-300 group-hover:stroke-gray-600">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-                        </svg>
+                    <button @click="goToNextProduct" :disabled="currentProductSlide === maxSlide" class="group cursor-pointer p-4" :class="{ 'opacity-50 cursor-not-allowed': currentProductSlide === maxSlide }">
+                        <svg class="size-4 fill-gray-400 group-hover:fill-gray-600" :class="{ 'fill-gray-600': currentProductSlide !== 0 }" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                        <path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/>
+                    </svg>
                     </button>
                 </div>
             </div>
-            <div class="relative overflow-hidden">
-                <div ref="productsWrapper" class="grid grid-cols-2 md:grid-cols-3 gap-6 mb-15 transition-transform duration-300 ease-in-out" :style="{ transform: `translateX(-${translateX}%)` }">
-                    <div v-for="(product, index) in slide_products" :key="index" class="group block w-full h-full">
-                        <a href="#" class="relative w-full h-full aspect-square">
-                            <figure class=" border border-gray-300 group-hover:border-gray-500 transition-colors rounded-lg overflow-hidden">
-                                <img :src="product.image" :alt="product.name" class="object-cover object-center w-full h-auto group-hover:scale-105 transition-transform">
-                            </figure>
-                            <div v-if="product.sale" class="absolute top-0 left-0 right-0 px-3 pt-3">
-                                <div class="flex justify-start items-center w-fit h-full bg-red-600 border border-gray-500 transition-colors py-1.5 px-2.5 rounded-lg">
-                                    <span class="text-white text-sm font-semibold">SALE</span>
+            <div class="relative overflow-hidden w-full mb-12 md:mb-15">
+                <div class="flex transition-transform duration-300 ease-in-out" :style="carouselStyle">
+                    <div v-for="(slide, indexSlide) in productSlide" :key="indexSlide" class="w-full flex-shrink-0 grid grid-cols-2 md:grid-cols-3 gap-6">
+                        <div v-for="product in slide" :key="product.id" class="group block w-full h-full">
+                            <a href="#" class="relative w-full h-full aspect-square">
+                                <figure class=" border border-gray-300 group-hover:border-gray-500 transition-colors rounded-lg overflow-hidden">
+                                    <img :src="product.image" :alt="product.name" class="object-cover object-center w-full h-auto group-hover:scale-105 transition-transform">
+                                </figure>
+                                <div v-if="product.sale" class="absolute top-0 left-0 right-0 px-3 pt-3">
+                                    <div class="flex justify-start items-center w-fit h-full bg-red-600 border border-gray-500 transition-colors py-1.5 px-2.5 rounded-lg">
+                                        <span class="text-white text-sm font-semibold">SALE</span>
+                                    </div>
                                 </div>
-                            </div>
-                        </a>
-                        <div class="flex justify-between w-full mt-5">
-                            <div class="w-full overflow-hidden">
-                                <a href="#">
-                                    <p class="w-5/6 font-normal text-sm text-gray-600 truncate mb-2">{{ product.name }}</p>
-                                </a>
-                                <div class="relative inline-flex items-start">
-                                    <span class="font-semibold text-2xl mr-1">${{ product.price_final }}</span>
-                                    <span v-if="product.sale" class="font-normal text-sm text-gray-400 line-through pt-0.5">${{ product.price_initial }}</span>
+                            </a>
+                            <div class="flex justify-between w-full mt-5">
+                                <div class="w-full overflow-hidden">
+                                    <a href="#">
+                                        <p class="w-5/6 font-normal text-sm text-gray-600 truncate mb-2">{{ product.name }}</p>
+                                    </a>
+                                    <div class="relative inline-flex items-start">
+                                        <span class="font-semibold text-2xl mr-1">${{ product.price_final }}</span>
+                                        <span v-if="product.sale" class="font-normal text-sm text-gray-400 line-through pt-0.5">${{ product.price_initial }}</span>
+                                    </div>
                                 </div>
+                                <button class="block h-fit bg-gray-800 rounded-lg p-4 cursor-pointer hover:bg-gray-800/95 transition-colors">
+                                    <svg class="size-5 fill-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                                        <path d="M0 24C0 10.7 10.7 0 24 0L69.5 0c22 0 41.5 12.8 50.6 32l411 0c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3l-288.5 0 5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5L488 336c13.3 0 24 10.7 24 24s-10.7 24-24 24l-288.3 0c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5L24 48C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"/>
+                                    </svg>
+                                </button>
                             </div>
-                            <button class="block h-fit bg-gray-800 rounded-lg p-4 cursor-pointer hover:bg-gray-800/95 transition-colors">
-                                <svg class="size-5 fill-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
-                                    <path d="M0 24C0 10.7 10.7 0 24 0L69.5 0c22 0 41.5 12.8 50.6 32l411 0c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3l-288.5 0 5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5L488 336c13.3 0 24 10.7 24 24s-10.7 24-24 24l-288.3 0c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5L24 48C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"/>
-                                </svg>
-                            </button>
                         </div>
                     </div>
-                    <!-- <div class="group block w-full h-full">
-                        <a href="#" class="relative w-full h-full aspect-square">
-                            <figure class=" border border-gray-300 group-hover:border-gray-500 transition-colors rounded-lg overflow-hidden">
-                                <img src="/images/sofa-1.png" alt="Bed" class="object-cover object-center w-full h-auto group-hover:scale-105 transition-transform">
-                            </figure>
-                        </a>
-                        <div class="flex justify-between w-full mt-5">
-                            <div class="w-full overflow-hidden">
-                                <a href="#">
-                                    <p class="w-5/6 font-normal text-sm text-gray-600 truncate mb-2">Sofa Soft Foam</p>
-                                </a>
-                                <div class="relative inline-flex items-start">
-                                    <span class="font-semibold text-2xl mr-1">$58</span>
-                                </div>
-                            </div>
-                            <button class="block h-fit bg-gray-800 rounded-lg p-4 cursor-pointer hover:bg-gray-800/95 transition-colors">
-                                <svg class="size-5 fill-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
-                                    <path d="M0 24C0 10.7 10.7 0 24 0L69.5 0c22 0 41.5 12.8 50.6 32l411 0c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3l-288.5 0 5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5L488 336c13.3 0 24 10.7 24 24s-10.7 24-24 24l-288.3 0c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5L24 48C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"/>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="group block w-full h-full">
-                        <a href="#" class="relative w-full h-full aspect-square">
-                            <figure class=" border border-gray-300 group-hover:border-gray-500 transition-colors rounded-lg overflow-hidden">
-                                <img src="/images/sideboard-1.png" alt="Bed" class="object-cover object-center w-full h-auto group-hover:scale-105 transition-transform">
-                            </figure>
-                            <div class="absolute top-0 left-0 right-0 px-3 pt-3">
-                                <div class="flex justify-start items-center w-fit h-full bg-red-600 border border-gray-500 transition-colors py-1.5 px-2.5 rounded-lg">
-                                    <span class="text-white text-sm font-semibold">SALE</span>
-                                </div>
-                            </div>
-                        </a>
-                        <div class="flex justify-between w-full mt-5">
-                            <div class="w-full overflow-hidden">
-                                <a href="#">
-                                    <p class="w-5/6 font-normal text-sm text-gray-600 truncate mb-2">Wooden Sideboard 3 Storage</p>
-                                </a>
-                                <div class="relative inline-flex items-start">
-                                    <span class="font-semibold text-2xl mr-1">$58</span>
-                                    <span class="font-normal text-sm text-gray-400 line-through pt-0.5">$65</span>
-                                </div>
-                            </div>
-                            <button class="block h-fit bg-gray-800 rounded-lg p-4 cursor-pointer hover:bg-gray-800/95 transition-colors">
-                                <svg class="size-5 fill-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
-                                    <path d="M0 24C0 10.7 10.7 0 24 0L69.5 0c22 0 41.5 12.8 50.6 32l411 0c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3l-288.5 0 5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5L488 336c13.3 0 24 10.7 24 24s-10.7 24-24 24l-288.3 0c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5L24 48C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"/>
-                                </svg>
-                            </button>
-                        </div>
-                    </div> -->
                 </div>
             </div>
+            <!-- Pagination Indicators -->
             <div class="block w-1/3 h-1.5 mx-auto border border-gray-800 rounded-full">
-                <div class="block w-1/2 h-full bg-gray-800"></div>
+                <div :class="indicatorStyle" class="block h-full bg-gray-800"></div>
+            </div>
+        </div>
+        <!-- Section #4 Limited Offer & Subscribe to our Newsletter -->
+        <div class="relative w-full mb-20">
+            <div class="relative w-full grid grid-cols-1 md:grid-cols-12 overflow-hidden rounded-lg mb-20">
+                <div class="block md:col-span-5 bg-white">
+                    <figure class="w-full h-full">
+                        <img src="/images/hero-image-5.jpg" alt="Bed" class="object-cover object-center w-full h-full group-hover:scale-105 transition-transform">
+                    </figure>
+                </div>
+                <div class="flex flex-col flex-1 items-stretch w-full h-full md:col-span-7 bg-gray-900 text-white p-10 xl:p-15">
+                    <p class="font-normal text-sm text-center md:text-left uppercase mb-2">Limited Offer</p>
+                    <h2 class="font-semibold text-3xl text-center md:text-left md:text-5xl xl:text-6xl mb-12 xl:max-w-5/6">35% off only this friday and get special gift</h2>
+                    <a href="#" class="group/link flex justify-between items-center w-fit gap-3 mt-auto not-md:mx-auto bg-white border border-gray-300 hover:border-gray-500 transition-colors py-3.5 px-5 rounded-lg">
+                        <span class="font-medium text-base text-gray-800">Grab it now</span>
+                        <svg class="size-5 fill-gray-800 -translate-x-1 group-hover/link:translate-x-0 transition-transform" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                            <path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            <div class="relative w-full">
+                <h2 class="font-semibold text-3xl text-gray-800 text-center max-w-2xl mx-auto mb-4">
+                    Subscribe to our newsletter to get updates to our latest collections
+                </h2>
+                <p class="font-normal text-sm text-gray-800 text-center max-w-xl mx-auto mb-8">
+                    Get 20% off on your first order just by subscribing to our newsletter
+                </p>
+                <form class="flex justify-center mb-5">
+                    <div class="inline-flex gap-2">
+                        <label for="email" class="relative inline-flex items-center py-3.5 pl-12 pr-4 border border-gray-100 bg-gray-50 rounded-lg">
+                            <input type="email" id="email" placeholder="Enter Your Email" class="w-full focus:outline-0 text-gray-800" />
+                            <svg class="absolute left-4 size-5 fill-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                <path d="M64 112c-8.8 0-16 7.2-16 16l0 22.1L220.5 291.7c20.7 17 50.4 17 71.1 0L464 150.1l0-22.1c0-8.8-7.2-16-16-16L64 112zM48 212.2L48 384c0 8.8 7.2 16 16 16l384 0c8.8 0 16-7.2 16-16l0-171.8L322 328.8c-38.4 31.5-93.7 31.5-132 0L48 212.2zM0 128C0 92.7 28.7 64 64 64l384 0c35.3 0 64 28.7 64 64l0 256c0 35.3-28.7 64-64 64L64 448c-35.3 0-64-28.7-64-64L0 128z"/>
+                            </svg>
+                        </label>
+                        <button type="submit" class="w-fit text-white bg-gray-800 py-3.5 px-4 rounded-lg cursor-pointer hover:bg-gray-800/90 transition-colors duration-300">Subscribe</button>
+                    </div>
+                </form>
+                <p class="font-normal text-sm text-gray-800 text-center mx-auto">
+                    You will be able to unsubscribe at any time. <br> Read our Privacy Policy <a href="#" class="font-semibold hover:underline transition duration-300">here</a>.
+                </p>
             </div>
         </div>
     </div>

@@ -3,10 +3,10 @@ const year = new Date().getFullYear();
 </script>
 
 <template>
-    <footer class="relative flex flex-col w-full px-12 py-6 md:px-24 md:py-8 bg-gray-200">
+    <footer class="relative flex flex-col w-full px-12 py-6 md:px-24 md:py-8 bg-gray-100">
         <div class="grid grid-cols-1 md:grid-cols-3 mt-4">
             <div class="col-span-1 mb-6 md:mb-0">
-                <h1 class="text-2xl font-bold mb-5">NOSTRA</h1>
+                <h1 class="text-2xl font-bold mb-5">BACKWATERS</h1>
                 <p class="text-sm text-gray-500 w-full md:w-2/3">
                     Specializes in providing high-quality, stylish products for your wardrobe
                 </p>
@@ -76,7 +76,7 @@ const year = new Date().getFullYear();
                 </div>
             </div>
         </div>
-        <div class="w-full h-px bg-gray-500 my-8"></div>
+        <div class="w-full h-px bg-gray-300 my-8"></div>
         <div class="flex w-full justify-center items-center">
             <p class="text-sm text-gray-600">Copyright @{{ year }} Nostra. All right reserved.</p>
         </div>
