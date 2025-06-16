@@ -1,46 +1,184 @@
+<script setup>
+import { ref } from 'vue';
+
+const videoPlayer = ref(null);
+const isPlaying = ref(false);
+
+const togglePlay = () => {
+  if (videoPlayer.value.paused) {
+    videoPlayer.value.play();
+    isPlaying.value = true;
+  } else {
+    videoPlayer.value.pause();
+    isPlaying.value = false;
+  }
+};
+</script>
 <template>
     <div class="relative flex flex-col w-full px-12 md:px-24">
-        <!-- Section #4 Limited Offer & Subscribe to our Newsletter -->
-        <div class="relative w-full mb-20">
-            <div class="relative w-full grid grid-cols-1 md:grid-cols-12 overflow-hidden rounded-lg mb-20">
-                <div class="block md:col-span-5 bg-white">
-                    <figure class="w-full h-full">
-                        <img src="/images/hero-image-5.jpg" alt="Bed" class="object-cover object-center w-full h-full group-hover:scale-105 transition-transform">
-                    </figure>
-                </div>
-                <div class="flex flex-col flex-1 items-stretch w-full h-full md:col-span-7 bg-gray-900 text-white p-10 xl:p-15">
-                    <p class="font-normal text-sm text-center md:text-left uppercase mb-2">Limited Offer</p>
-                    <h2 class="font-semibold text-3xl text-center md:text-left md:text-5xl xl:text-6xl mb-12 xl:max-w-5/6">35% off only this friday and get special gift</h2>
-                    <a href="#" class="group/link flex justify-between items-center w-fit gap-3 mt-auto not-md:mx-auto bg-white border border-gray-300 hover:border-gray-500 transition-colors py-3.5 px-5 rounded-lg">
-                        <span class="font-medium text-base text-gray-800">Grab it now</span>
-                        <svg class="size-5 fill-gray-800 -translate-x-1 group-hover/link:translate-x-0 transition-transform" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-                            <path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z"/>
-                        </svg>
-                    </a>
+        <!-- Section #1 -->
+        <div class="relative w-full my-20">
+            <div class="grid grid-cols-1 md:grid-cols-2 w-full h-full justify-between items-center mb-10">
+                <h3 class="font-semibold text-3xl text-center md:text-left">
+                    About Us
+                </h3>
+                <div class="justify-self-end inline-flex items-center space-x-6">
+                    <div class="hidden md:inline-block min-h-16 w-0.5 self-stretch bg-gray-800"></div>
+                    <p class="text-center md:text-left not-md:mt-4">We ensure our customers have the best shopping experience</p>
                 </div>
             </div>
-            <div class="relative w-full">
-                <h2 class="font-semibold text-3xl text-gray-800 text-center max-w-2xl mx-auto mb-4">
-                    Subscribe to our newsletter to get updates to our latest collections
-                </h2>
-                <p class="font-normal text-sm text-gray-800 text-center max-w-xl mx-auto mb-8">
-                    Get 20% off on your first order just by subscribing to our newsletter
-                </p>
-                <form class="flex justify-center mb-5">
-                    <div class="inline-flex gap-2">
-                        <label for="email" class="relative inline-flex items-center py-3.5 pl-12 pr-4 border border-gray-100 bg-gray-50 rounded-lg">
-                            <input type="email" id="email" placeholder="Enter Your Email" class="w-full focus:outline-0 text-gray-800" />
-                            <svg class="absolute left-4 size-5 fill-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                                <path d="M64 112c-8.8 0-16 7.2-16 16l0 22.1L220.5 291.7c20.7 17 50.4 17 71.1 0L464 150.1l0-22.1c0-8.8-7.2-16-16-16L64 112zM48 212.2L48 384c0 8.8 7.2 16 16 16l384 0c8.8 0 16-7.2 16-16l0-171.8L322 328.8c-38.4 31.5-93.7 31.5-132 0L48 212.2zM0 128C0 92.7 28.7 64 64 64l384 0c35.3 0 64 28.7 64 64l0 256c0 35.3-28.7 64-64 64L64 448c-35.3 0-64-28.7-64-64L0 128z"/>
-                            </svg>
-                        </label>
-                        <button type="submit" class="w-fit text-white bg-gray-800 py-3.5 px-4 rounded-lg cursor-pointer hover:bg-gray-800/90 transition-colors duration-300">Subscribe</button>
+            <div class="flex w-full md:h-[60dvh] rounded-lg overflow-hidden">
+                <figure class="w-full h-full">
+                    <img src="/images/team-1.jpg" alt="Bed" class="object-cover object-center w-full h-full">
+                </figure>
+            </div>
+        </div>
+        <!-- Section #2 -->
+        <div class="relative w-full mb-20">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="block text-center md:text-left">
+                    <h3 class="font-medium text-5xl md:text-6xl text-left">
+                        1000+
+                    </h3>
+                    <p class="text-left mt-2">
+                        Clients helped globally
+                    </p>
+                </div>
+                <div class="block text-center md:text-left">
+                    <h3 class="font-medium text-5xl md:text-6xl text-left">
+                        200+
+                    </h3>
+                    <p class="text-left mt-2">
+                        Licensed professionals
+                    </p>
+                </div>
+                <div class="block text-center md:text-left">
+                    <h3 class="font-medium text-5xl md:text-6xl text-left">
+                        95%
+                    </h3>
+                    <p class="text-left mt-2">
+                        Client satisfaction rate
+                    </p>
+                </div>
+                <div class="block text-center md:text-left">
+                    <h3 class="font-medium text-5xl md:text-6xl text-left">
+                        15+
+                    </h3>
+                    <p class="text-left mt-2">
+                        Years of experience
+                    </p>
+                </div>
+            </div>
+        </div>
+        <!-- Section #3 -->
+        <div class="relative w-full mb-20">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <h3 class="font-medium text-6xl text-center md:text-left not-md:mb-10">
+                    Empowering Global Mental Health Access
+                </h3>
+                <div class="block w-full space-y-10">
+                    <div class="border-b border-gray-300">
+                        <h3 class="font-semibold text-lg text-center md:text-left mb-2">
+                            OUR VISION
+                        </h3>
+                        <p class="text-center md:text-left mb-3">
+                            To be the leading mental health platform, providing accessible, compassionate, and innovative care for emotional and mental well-being worldwide.
+                        </p>
                     </div>
-                </form>
-                <p class="font-normal text-sm text-gray-800 text-center mx-auto">
-                    You will be able to unsubscribe at any time. <br> Read our Privacy Policy <a href="#" class="font-semibold hover:underline transition duration-300">here</a>.
-                </p>
+                    <div class="border-b border-gray-300">
+                        <h3 class="font-semibold text-lg text-center md:text-left mb-2">
+                            OUR MISSION
+                        </h3>
+                        <p class="text-center md:text-left mb-3">
+                            To support individuals in achieving mental and emotional balance through tailored therapy, education, ensuring everyone has access to professional care.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Section #4 -->
+        <div class="relative w-full mb-20">
+            <div class="grid grid-cols-1 md:grid-cols-2 w-full h-full justify-between items-center mb-10">
+                <h3 class="font-semibold text-3xl text-center md:text-left">
+                    Meet the team
+                </h3>
+                <div class="inline-flex items-center space-x-6">
+                    <div class="hidden md:inline-block min-h-16 w-0.5 self-stretch bg-gray-800"></div>
+                    <p class="text-center md:text-left not-md:mt-4">
+                        We're a team of designers, strategists, and builders driven by curiosity and craft. Every project we take on is powered by collaboration, diverse perspectives, and a shared mission to deliver real results.
+                    </p>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-4 p-8 bg-gray-200 rounded-lg gap-6">
+                <div class="block bg-white rounded-lg p-4">
+                    <figure class="aspect-square w-full rounded-lg overflow-hidden">
+                        <img class="object-cover object-center w-full h-full grayscale" src="/images/team-2.jpg" alt="Meat our team">
+                    </figure>
+                    <div class="block w-full text-center p-4">
+                        <h3 class="font-semibold text-lg">Jackson Fisher</h3>
+                        <p class="font-normal text-gray-500">Director</p>
+                    </div>
+                </div>
+                <div class="block bg-white rounded-lg p-4">
+                    <figure class="aspect-square w-full rounded-lg overflow-hidden">
+                        <img class="object-cover object-center w-full h-full grayscale" src="/images/team-2.jpg" alt="Meat our team">
+                    </figure>
+                    <div class="block w-full text-center p-4">
+                        <h3 class="font-semibold text-lg">Jackson Fisher</h3>
+                        <p class="font-normal text-gray-500">Project Manager</p>
+                    </div>
+                </div>
+                <div class="block bg-white rounded-lg p-4">
+                    <figure class="aspect-square w-full rounded-lg overflow-hidden">
+                        <img class="object-cover object-center w-full h-full grayscale" src="/images/team-2.jpg" alt="Meat our team">
+                    </figure>
+                    <div class="block w-full text-center p-4">
+                        <h3 class="font-semibold text-lg">Jackson Fisher</h3>
+                        <p class="font-normal text-gray-500">Marketing</p>
+                    </div>
+                </div>
+                <div class="block bg-white rounded-lg p-4">
+                    <figure class="aspect-square w-full rounded-lg overflow-hidden">
+                        <img class="object-cover object-center w-full h-full grayscale" src="/images/team-2.jpg" alt="Meat our team">
+                    </figure>
+                    <div class="block w-full text-center p-4">
+                        <h3 class="font-semibold text-lg">Jackson Fisher</h3>
+                        <p class="font-normal text-gray-500">Operational</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Section #5 -->
+        <div class="relative w-full mb-20">
+            <!-- Video Container -->
+            <div class="flex w-full md:h-[60dvh] rounded-lg overflow-hidden bg-gray-100">
+                <video ref="videoPlayer" class="object-cover object-center w-full h-full" poster="/images/hero-image-6.jpg" @click="togglePlay">
+                    <source src="#" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <!-- Play/Pause Button -->
+                <button @click="togglePlay" class="group absolute inset-0 flex items-center justify-center w-full h-full cursor-pointer" :class="{ 'opacity-0': isPlaying }">
+                    <div class=" bg-gray-800/40 rounded-full transition-all group-hover:bg-gray-800/60">
+                        <svg class="size-12 md:size-16 fill-white transition-transform group-hover:scale-110" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                            <path v-if="!isPlaying" d="M464 256A208 208 0 1 0 48 256a208 208 0 1 0 416 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zM188.3 147.1c7.6-4.2 16.8-4.1 24.3 .5l144 88c7.1 4.4 11.5 12.1 11.5 20.5s-4.4 16.1-11.5 20.5l-144 88c-7.4 4.5-16.7 4.7-24.3 .5s-12.3-12.2-12.3-20.9l0-176c0-8.7 4.7-16.7 12.3-20.9z"/>
+                            <path v-else d="M464 256A208 208 0 1 0 48 256a208 208 0 1 0 416 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zM224 192c-13.3 0-24 10.7-24 24V296c0 13.3 10.7 24 24 24s24-10.7 24-24V216c0-13.3-10.7-24-24-24zm80 0c-13.3 0-24 10.7-24 24V296c0 13.3 10.7 24 24 24s24-10.7 24-24V216c0-13.3-10.7-24-24-24z"/>
+                        </svg>
+                    </div>
+                </button>
             </div>
         </div>
     </div>
 </template>
+
+<style scoped>
+/* Smooth transitions */
+button, svg {
+  transition: all 0.3s ease;
+}
+
+/* Hide button when video is playing (but show on hover) */
+video:hover + button, 
+button:hover {
+  opacity: 1 !important;
+}
+</style>
