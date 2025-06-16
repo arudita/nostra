@@ -112,7 +112,7 @@ const togglePlay = () => {
             <div class="grid grid-cols-1 md:grid-cols-4 p-8 bg-gray-200 rounded-lg gap-6">
                 <div class="block bg-white rounded-lg p-4">
                     <figure class="aspect-square w-full rounded-lg overflow-hidden">
-                        <img class="object-cover object-center w-full h-full grayscale" src="/images/team-2.jpg" alt="Meat our team">
+                        <img class="object-cover object-center w-full h-full grayscale hover:grayscale-50 transition duration-300" src="/images/team-2.jpg" alt="Meat our team">
                     </figure>
                     <div class="block w-full text-center p-4">
                         <h3 class="font-semibold text-lg">Jackson Fisher</h3>
@@ -121,7 +121,7 @@ const togglePlay = () => {
                 </div>
                 <div class="block bg-white rounded-lg p-4">
                     <figure class="aspect-square w-full rounded-lg overflow-hidden">
-                        <img class="object-cover object-center w-full h-full grayscale" src="/images/team-2.jpg" alt="Meat our team">
+                        <img class="object-cover object-center w-full h-full grayscale hover:grayscale-50 transition duration-300" src="/images/team-3.jpg" alt="Meat our team">
                     </figure>
                     <div class="block w-full text-center p-4">
                         <h3 class="font-semibold text-lg">Jackson Fisher</h3>
@@ -130,7 +130,7 @@ const togglePlay = () => {
                 </div>
                 <div class="block bg-white rounded-lg p-4">
                     <figure class="aspect-square w-full rounded-lg overflow-hidden">
-                        <img class="object-cover object-center w-full h-full grayscale" src="/images/team-2.jpg" alt="Meat our team">
+                        <img class="object-cover object-center w-full h-full grayscale hover:grayscale-50 transition duration-300" src="/images/team-4.jpg" alt="Meat our team">
                     </figure>
                     <div class="block w-full text-center p-4">
                         <h3 class="font-semibold text-lg">Jackson Fisher</h3>
@@ -139,7 +139,7 @@ const togglePlay = () => {
                 </div>
                 <div class="block bg-white rounded-lg p-4">
                     <figure class="aspect-square w-full rounded-lg overflow-hidden">
-                        <img class="object-cover object-center w-full h-full grayscale" src="/images/team-2.jpg" alt="Meat our team">
+                        <img class="object-cover object-center w-full h-full grayscale hover:grayscale-50 transition duration-300" src="/images/team-5.jpg" alt="Meat our team">
                     </figure>
                     <div class="block w-full text-center p-4">
                         <h3 class="font-semibold text-lg">Jackson Fisher</h3>

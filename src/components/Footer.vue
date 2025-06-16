@@ -78,7 +78,7 @@ const year = new Date().getFullYear();
         </div>
         <div class="w-full h-px bg-gray-300 my-8"></div>
         <div class="flex w-full justify-center items-center">
-            <p class="text-sm text-gray-600">Copyright @{{ year }} Nostra. All right reserved.</p>
+            <p class="text-xs md:text-sm text-gray-600">Copyright @{{ year }} Nostra. All right reserved.</p>
         </div>
     </footer>
 </template>

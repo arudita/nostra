@@ -163,11 +163,11 @@ onBeforeUnmount(() => {
         </figure>
         <!-- Section #1 Services -->
         <div class="relative w-full mb-20">
-            <div class="relative flex flex-col md:flex-row w-full h-full justify-between items-center mb-10">
+            <div class="grid grid-cols-1 md:grid-cols-2 w-full h-full justify-between items-center mb-10">
                 <h3 class="font-semibold text-3xl text-center md:text-left">
                     We provide best <br>customer experiences
                 </h3>
-                <div class="inline-flex items-center space-x-6">
+                <div class="justify-self-end inline-flex items-center space-x-6">
                     <div class="hidden md:inline-block min-h-16 w-0.5 self-stretch bg-gray-800"></div>
                     <p class="text-center md:text-left not-md:mt-4">We ensure our customers have the best shopping experience</p>
                 </div>
