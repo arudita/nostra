@@ -23,23 +23,211 @@ const products = [
 </script>
 <template>
     <div class="relative flex flex-col w-full px-12 md:px-24">
-        <!-- Section #3 Featured Products -->
-        <div class="relative w-full mb-20">
-            <div class="relative inline-flex w-full h-full justify-between items-center mb-10">
-                <h3 class="text-3xl font-semibold">
-                    Featured Products
+        <!-- Section #1 Featured Products -->
+        <div class="relative w-full my-20">
+            <div class="grid grid-cols-1 md:grid-cols-2 w-full h-full justify-between items-center mb-10">
+                <h3 class="font-medium text-center text-4xl md:text-6xl md:text-left">
+                    Our Products
                 </h3>
             </div>
-            <div class="relative overflow-hidden w-full mb-12 md:mb-15">
-                <div class="flex transition-transform duration-300 ease-in-out">
-                    <div class="w-full flex-shrink-0 grid grid-cols-2 md:grid-cols-3 gap-6">
-                        <div v-for="product in products" :key="product.id" class="group block w-full h-full">
+            <div class="relative flex w-full h-full md:max-h-80 rounded-lg overflow-hidden">
+                <figure class="w-full h-full">
+                    <img src="/images/banner-1.jpg" alt="" class="object-cover object-center w-full h-full">
+                </figure>
+                <div class="absolute inset-0 flex flex-col justify-center w-1/2 px-6 md:px-12">
+                    <h3 class="font-bold text-4xl md:text-6xl text-gray-50 mb-4">
+                        Get 25% Cash Back <br>On $350
+                    </h3>
+                    <p class="hidden md:block text-xs md:text-sm text-gray-50">
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Beatae sequi fugiat aliquid ab est veniam cum neque harum expedita, libero eos commodi. Dolorum, modi!
+                    </p>
+                </div>
+            </div>
+        </div>
+        <!-- Section #2 Featured Products -->
+        <div class="relative w-full mb-20">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-20">
+                <div class="flex flex-1 flex-col justify-start">
+                    <div class="inline-flex justify-between w-full font-semibold text-xs md:text-sm mb-6">
+                        <span>Filter</span>
+                        <button class="hover:text-red-400 transition-colors cursor-pointer">
+                            Reset
+                        </button>
+                    </div>
+                    <div class="flex flex-col items-start w-full space-y-3 mb-6">
+                        <button type="button" class="text-xs md:text-sm hover:text-gray-600 transition-colors cursor-pointer">
+                            View All Products
+                        </button>
+                        <button type="button" class="text-xs md:text-sm hover:text-gray-600 transition-colors cursor-pointer">
+                            New Arrivals
+                        </button>
+                        <button type="button" class="text-xs md:text-sm hover:text-gray-600 transition-colors cursor-pointer">
+                            Best Sellers
+                        </button>
+                    </div>
+                    <details class="group relative overflow-hidden rounded-lg border border-gray-300 mb-3">
+                        <summary class="flex items-center justify-between gap-2 p-3 text-gray-700 transition-colors hover:text-gray-900 [&::-webkit-details-marker]:hidden">
+                            <span class="font-medium text-xs md:text-sm"> Seating </span>
+                            <span class="transition-transform group-open:-rotate-180">
+                                <svg class="size-4 fill-gray-700" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                    <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/>
+                                </svg>
+                            </span>
+                        </summary>
+                        <div class="divide-y divide-gray-300 border-t border-gray-300 bg-white">
+                            <fieldset class="p-3">
+                                <legend class="sr-only">Seating</legend>
+                                <div class="flex flex-col items-start text-sm text-gray-500 gap-3">
+                                    <button type="button" class="text-xs md:text-sm hover:text-gray-700 cursor-pointer">
+                                        Benches
+                                    </button>
+                                    <button type="button" class="text-xs md:text-sm hover:text-gray-700 cursor-pointer">
+                                        Dining Chairs
+                                    </button>
+                                    <button type="button" class="text-xs md:text-sm hover:text-gray-700 cursor-pointer">
+                                        Lounge Chairs
+                                    </button>
+                                    <button type="button" class="text-xs md:text-sm hover:text-gray-700 cursor-pointer">
+                                        Stools
+                                    </button>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </details>
+                    <details class="group relative overflow-hidden rounded-lg border border-gray-300 mb-3">
+                        <summary class="flex items-center justify-between gap-2 p-3 text-gray-700 transition-colors hover:text-gray-900 [&::-webkit-details-marker]:hidden">
+                            <span class="font-medium text-xs md:text-sm"> Tables </span>
+                            <span class="transition-transform group-open:-rotate-180">
+                                <svg class="size-4 fill-gray-700" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                    <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/>
+                                </svg>
+                            </span>
+                        </summary>
+                        <div class="divide-y divide-gray-300 border-t border-gray-300 bg-white">
+                            <fieldset class="p-3">
+                                <legend class="sr-only">Tables</legend>
+                                <div class="flex flex-col items-start text-sm text-gray-500 gap-3">
+                                    <button type="button" class="text-xs md:text-sm hover:text-gray-700 cursor-pointer">
+                                        Coffee Tables
+                                    </button>
+                                    <button type="button" class="text-xs md:text-sm hover:text-gray-700 cursor-pointer">
+                                        Console Tables
+                                    </button>
+                                    <button type="button" class="text-xs md:text-sm hover:text-gray-700 cursor-pointer">
+                                        Desks & Writing Tables
+                                    </button>
+                                    <button type="button" class="text-xs md:text-sm hover:text-gray-700 cursor-pointer">
+                                        Dining Tables
+                                    </button>
+                                    <button type="button" class="text-xs md:text-sm hover:text-gray-700 cursor-pointer">
+                                        Nightstands
+                                    </button>
+                                    <button type="button" class="text-xs md:text-sm hover:text-gray-700 cursor-pointer">
+                                        Side Tables
+                                    </button>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </details>
+                    <details class="group relative overflow-hidden rounded-lg border border-gray-300 mb-3">
+                        <summary class="flex items-center justify-between gap-2 p-3 text-gray-700 transition-colors hover:text-gray-900 [&::-webkit-details-marker]:hidden">
+                            <span class="font-medium text-xs md:text-sm"> Storage </span>
+                            <span class="transition-transform group-open:-rotate-180">
+                                <svg class="size-4 fill-gray-700" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                    <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/>
+                                </svg>
+                            </span>
+                        </summary>
+                        <div class="divide-y divide-gray-300 border-t border-gray-300 bg-white">
+                            <fieldset class="p-3">
+                                <legend class="sr-only">Storage</legend>
+                                <div class="flex flex-col items-start text-sm text-gray-500 gap-3">
+                                    <button type="button" class="text-xs md:text-sm hover:text-gray-700 cursor-pointer">
+                                        Bookcases & Shelving
+                                    </button>
+                                    <button type="button" class="text-xs md:text-sm hover:text-gray-700 cursor-pointer">
+                                        Buffets & Sideboards
+                                    </button>
+                                    <button type="button" class="text-xs md:text-sm hover:text-gray-700 cursor-pointer">
+                                        Dressers & Armoires
+                                    </button>
+                                    <button type="button" class="text-xs md:text-sm hover:text-gray-700 cursor-pointer">
+                                        Storage Cupboards
+                                    </button>
+                                    <button type="button" class="text-xs md:text-sm hover:text-gray-700 cursor-pointer">
+                                        TV Stands & Media Consoles
+                                    </button>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </details>
+                    <details class="group relative overflow-hidden rounded-lg border border-gray-300 mb-3">
+                        <summary class="flex items-center justify-between gap-2 p-3 text-gray-700 transition-colors hover:text-gray-900 [&::-webkit-details-marker]:hidden">
+                            <span class="font-medium text-xs md:text-sm"> Beds </span>
+                            <span class="transition-transform group-open:-rotate-180">
+                                <svg class="size-4 fill-gray-700" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                    <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/>
+                                </svg>
+                            </span>
+                        </summary>
+                        <div class="divide-y divide-gray-300 border-t border-gray-300 bg-white">
+                            <fieldset class="p-3">
+                                <legend class="sr-only">Beds</legend>
+                                <div class="flex flex-col items-start text-sm text-gray-500 gap-3">
+                                    <button type="button" class="text-xs md:text-sm hover:text-gray-700 cursor-pointer">
+                                        Canopy Bed
+                                    </button>
+                                    <button type="button" class="text-xs md:text-sm hover:text-gray-700 cursor-pointer">
+                                        Sleigh Bed
+                                    </button>
+                                    <button type="button" class="text-xs md:text-sm hover:text-gray-700 cursor-pointer">
+                                        Four Poster Bed
+                                    </button>
+                                    <button type="button" class="text-xs md:text-sm hover:text-gray-700 cursor-pointer">
+                                        Panel Bed
+                                    </button>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </details>
+                    <details class="group relative overflow-hidden rounded-lg border border-gray-300">
+                        <summary class="flex items-center justify-between gap-2 p-3 text-gray-700 transition-colors hover:text-gray-900 [&::-webkit-details-marker]:hidden">
+                            <span class="font-medium text-xs md:text-sm"> Price </span>
+                            <span class="transition-transform group-open:-rotate-180">
+                                <svg class="size-4 fill-gray-700" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                    <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/>
+                                </svg>
+                            </span>
+                        </summary>
+                        <div class="divide-y divide-gray-300 border-t border-gray-300 bg-white">
+                            <div class="flex items-center justify-between text-xs md:text-sm text-gray-700 px-3 py-2">
+                                <span> Max price is $1.200 </span>
+                                <button type="button" class="hover:text-red-400 transition-colors cursor-pointer">
+                                    Reset
+                                </button>
+                            </div>
+                            <div class="flex items-center text-xs md:text-sm gap-3 p-3">
+                                <label for="MinPrice" class="w-full">
+                                    <span class="text-sm text-gray-700"> Min </span>
+                                    <input type="number" id="MinPrice" value="0" min="0" max="1199" class="w-full rounded-lg border border-gray-300 focus-within:border-gray-500 outline-none mt-1 p-2" />
+                                </label>
+                                <label for="MaxPrice" class="w-full">
+                                    <span class="text-sm text-gray-700"> Max </span>
+                                    <input type="number" id="MaxPrice" value="1200" min="1" max="1200" class="w-full rounded-lg border border-gray-300 focus-within:border-gray-500 outline-none mt-1 p-2" />
+                                </label>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+                <div class="flex transition-transform duration-300 ease-in-out col-span-3">
+                    <div class="w-full flex-shrink-0 grid grid-cols-2 md:grid-cols-5 gap-6">
+                        <div v-for="item in products" :key="item.id" class="group block w-full h-full">
                             <a href="#" class="relative w-full h-full aspect-square">
-                                <figure class=" border border-gray-300 group-hover:border-gray-500 transition-colors rounded-lg overflow-hidden">
-                                    <img :src="product.image" :alt="product.name" class="object-cover object-center w-full h-auto group-hover:scale-105 transition-transform">
+                                <figure class="border border-gray-300 group-hover:border-gray-500 transition-colors rounded-lg overflow-hidden">
+                                    <img :src="item.image" :alt="item.name" class="object-cover object-center w-full h-auto group-hover:scale-105 transition-transform">
                                 </figure>
-                                <div v-if="product.sale" class="absolute top-0 left-0 right-0 px-3 pt-3">
-                                    <div class="flex justify-start items-center w-fit h-full bg-red-600 border border-gray-500 transition-colors py-1.5 px-2.5 rounded-lg">
+                                <div v-if="item.sale" class="absolute top-0 left-0 right-0 px-3 pt-3">
+                                    <div class="flex justify-start items-center w-fit h-full bg-red-600 py-1.5 px-2.5 rounded-lg">
                                         <span class="text-white text-sm font-semibold">SALE</span>
                                     </div>
                                 </div>
@@ -47,11 +235,11 @@ const products = [
                             <div class="flex justify-between w-full mt-5">
                                 <div class="w-full overflow-hidden">
                                     <a href="#">
-                                        <p class="w-5/6 font-normal text-sm text-gray-600 truncate mb-2">{{ product.name }}</p>
+                                        <p class="w-5/6 font-normal text-sm text-gray-600 truncate mb-2">{{ item.name }}</p>
                                     </a>
                                     <div class="relative inline-flex items-start">
-                                        <span class="font-semibold text-2xl mr-1">${{ product.price_final }}</span>
-                                        <span v-if="product.sale" class="font-normal text-sm text-gray-400 line-through pt-0.5">${{ product.price_initial }}</span>
+                                        <span class="font-semibold text-2xl mr-1">${{ item.price_final }}</span>
+                                        <span v-if="item.sale" class="font-normal text-sm text-gray-400 line-through pt-0.5">${{ item.price_initial }}</span>
                                     </div>
                                 </div>
                                 <button class="block h-fit bg-gray-800 rounded-lg p-4 cursor-pointer hover:bg-gray-800/95 transition-colors">
@@ -63,10 +251,6 @@ const products = [
                         </div>
                     </div>
                 </div>
-            </div>
-            <!-- Pagination Indicators -->
-            <div class="block w-1/3 h-1.5 mx-auto border border-gray-800 rounded-full">
-                <div class="w-1/2 block h-full bg-gray-800"></div>
             </div>
         </div>
     </div>
