@@ -2,22 +2,46 @@
 // Featured Products Section
 const products = [
     {
-        id: 1, image: '/images/armchair-2.png', alt: 'Product image 1', url: '#', name: 'Wooden Armchair Soft Foam (Grey)', sale: true, price_final: 58, price_initial: 65
+        id: 1, image: '/images/armchair-1.png', alt: 'Product image', url: '#', name: 'Armchair with Soft Foam', sale: false, price_final: 58, price_initial: 0
     },
     {
-        id: 2, image: '/images/sofa-1.png', alt: 'Product image 2', url: '#', name: 'Wooden Sofa with Soft Foam (Grey)', sale: false, price_final: 58, price_initial: 0
+        id: 2, image: '/images/armchair-2.png', alt: 'Product image', url: '#', name: 'Armchair with Soft Foam', sale: true, price_final: 58, price_initial: 65
     },
     {
-        id: 3, image: '/images/sideboard-1.png', alt: 'Product image 3', url: '#', name: 'Sideboard 3 Storage', sale: true, price_final: 32, price_initial: 38
+        id: 3, image: '/images/armchair-3.png', alt: 'Product image', url: '#', name: 'Armchair with Soft Foam', sale: true, price_final: 58, price_initial: 65
     },
     {
-        id: 4, image: '/images/sofa-2.png', alt: 'Product image 4', url: '#', name: 'Wooden Sofa with Soft Foam (Peach)', sale: true, price_final: 49, price_initial: 56
+        id: 4, image: '/images/armchair-4.png', alt: 'Product image', url: '#', name: 'Armchair with Soft Foam', sale: true, price_final: 58, price_initial: 65
     },
     {
-        id: 5, image: '/images/armchair-1.png', alt: 'Product image 5', url: '#', name: 'Armchair with Soft Foam', sale: false, price_final: 58, price_initial: 0
+        id: 5, image: '/images/sofa-1.png', alt: 'Product image', url: '#', name: 'Wooden Sofa with Soft Foam', sale: false, price_final: 58, price_initial: 0
     },
     {
-        id: 6, image: '/images/daybed-1.png', alt: 'Product image 6', url: '#', name: 'Wooden Daybed', sale: false, price_final: 58, price_initial: 0
+        id: 6, image: '/images/sofa-2.png', alt: 'Product image', url: '#', name: 'Wooden Sofa with Soft Foam', sale: true, price_final: 49, price_initial: 56
+    },
+    {
+        id: 7, image: '/images/sofa-3.png', alt: 'Product image', url: '#', name: 'Wooden Sofa with Soft Foam', sale: true, price_final: 49, price_initial: 56
+    },
+    {
+        id: 8, image: '/images/sideboard-1.png', alt: 'Product image', url: '#', name: 'Sideboard', sale: true, price_final: 32, price_initial: 38
+    },
+    {
+        id: 9, image: '/images/sideboard-2.png', alt: 'Product image', url: '#', name: 'Sideboard', sale: true, price_final: 32, price_initial: 38
+    },
+    {
+        id: 10, image: '/images/sideboard-3.png', alt: 'Product image', url: '#', name: 'Sideboard', sale: true, price_final: 32, price_initial: 38
+    },
+    {
+        id: 11, image: '/images/sideboard-4.png', alt: 'Product image', url: '#', name: 'Sideboard', sale: true, price_final: 32, price_initial: 38
+    },
+    {
+        id: 12, image: '/images/daybed-1.png', alt: 'Product image', url: '#', name: 'Wooden Daybed', sale: false, price_final: 58, price_initial: 0
+    },
+    {
+        id: 13, image: '/images/stool-1.png', alt: 'Product image', url: '#', name: 'Stool', sale: false, price_final: 58, price_initial: 0
+    },
+    {
+        id: 14, image: '/images/table-1.png', alt: 'Product image', url: '#', name: 'Wooden Table', sale: false, price_final: 58, price_initial: 0
     },
 ];
 </script>
@@ -46,9 +70,10 @@ const products = [
         </div>
         <!-- Section #2 Featured Products -->
         <div class="relative w-full mb-20">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-20">
-                <div class="flex flex-1 flex-col justify-start">
-                    <div class="inline-flex justify-between w-full font-semibold text-xs md:text-sm mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 not-md:space-y-5 md:space-x-10">
+                <!-- List Filters -->
+                <div class="flex flex-col justify-start">
+                    <div class="flex justify-between w-full font-semibold text-xs md:text-sm mb-6">
                         <span>Filter</span>
                         <button class="hover:text-red-400 transition-colors cursor-pointer">
                             Reset
@@ -219,37 +244,72 @@ const products = [
                         </div>
                     </details>
                 </div>
-                <div class="flex transition-transform duration-300 ease-in-out col-span-3">
-                    <div class="w-full flex-shrink-0 grid grid-cols-2 md:grid-cols-5 gap-6">
+                <!-- List Products -->
+                <div class="flex flex-col transition-transform duration-300 ease-in-out col-span-3">
+                    <div class="w-full flex-shrink-0 grid grid-cols-2 md:grid-cols-4 gap-6">
                         <div v-for="item in products" :key="item.id" class="group block w-full h-full">
-                            <a href="#" class="relative w-full h-full aspect-square">
+                            <RouterLink to="product-details" class="relative w-full h-full aspect-square">
                                 <figure class="border border-gray-300 group-hover:border-gray-500 transition-colors rounded-lg overflow-hidden">
                                     <img :src="item.image" :alt="item.name" class="object-cover object-center w-full h-auto group-hover:scale-105 transition-transform">
                                 </figure>
                                 <div v-if="item.sale" class="absolute top-0 left-0 right-0 px-3 pt-3">
-                                    <div class="flex justify-start items-center w-fit h-full bg-red-600 py-1.5 px-2.5 rounded-lg">
-                                        <span class="text-white text-sm font-semibold">SALE</span>
+                                    <div class="flex justify-start items-center w-fit h-full bg-red-600 py-1 px-2 rounded-lg">
+                                        <span class="text-xs md:text-sm text-white font-semibold">SALE</span>
                                     </div>
                                 </div>
-                            </a>
+                            </RouterLink>
                             <div class="flex justify-between w-full mt-5">
                                 <div class="w-full overflow-hidden">
-                                    <a href="#">
-                                        <p class="w-5/6 font-normal text-sm text-gray-600 truncate mb-2">{{ item.name }}</p>
-                                    </a>
+                                    <RouterLink to="product-details">
+                                        <p class="w-5/6 font-normal text-sm text-gray-500 truncate hover:text-gray-700 transition-colors mb-2">{{ item.name }}</p>
+                                    </RouterLink>
                                     <div class="relative inline-flex items-start">
                                         <span class="font-semibold text-2xl mr-1">${{ item.price_final }}</span>
                                         <span v-if="item.sale" class="font-normal text-sm text-gray-400 line-through pt-0.5">${{ item.price_initial }}</span>
                                     </div>
                                 </div>
-                                <button class="block h-fit bg-gray-800 rounded-lg p-4 cursor-pointer hover:bg-gray-800/95 transition-colors">
-                                    <svg class="size-5 fill-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                                <button class="block h-fit bg-gray-800 rounded-lg p-2 md:p-3 cursor-pointer hover:bg-gray-800/95 transition-colors">
+                                    <svg class="size-4 md:size-5 fill-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
                                         <path d="M0 24C0 10.7 10.7 0 24 0L69.5 0c22 0 41.5 12.8 50.6 32l411 0c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3l-288.5 0 5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5L488 336c13.3 0 24 10.7 24 24s-10.7 24-24 24l-288.3 0c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5L24 48C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"/>
                                     </svg>
                                 </button>
                             </div>
                         </div>
                     </div>
+                    <ul class="flex justify-center gap-1.5 mt-6">
+                        <li>
+                            <a href="#" class="grid size-8 place-content-center rounded border border-gray-300 transition-colors hover:bg-gray-100" aria-label="Previous page">
+                                <svg class="size-2.5 fill-gray-800" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                                    <path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z"/>
+                                </svg>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="block size-8 rounded border border-gray-300 text-center text-sm/8 font-medium transition-colors hover:bg-gray-100">
+                                1
+                            </a>
+                        </li>
+                        <li class="block size-8 rounded border border-gray-500 bg-gray-500 text-center text-sm/8 font-medium text-white">
+                            2
+                        </li>
+                        <li>
+                            <a href="#" class="block size-8 rounded border border-gray-300 text-center text-sm/8 font-medium transition-colors hover:bg-gray-100">
+                                3
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="block size-8 rounded border border-gray-300 text-center text-sm/8 font-medium transition-colors hover:bg-gray-100">
+                                4
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="grid size-8 place-content-center rounded border border-gray-300 transition-colors hover:bg-gray-100" aria-label="Next page">
+                                <svg class="size-2.5 fill-gray-800"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                                    <path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/>
+                                </svg>
+                            </a>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>

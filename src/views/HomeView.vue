@@ -319,7 +319,7 @@ onBeforeUnmount(() => {
                                 </figure>
                                 <div v-if="product.sale" class="absolute top-0 left-0 right-0 px-3 pt-3">
                                     <div class="flex justify-start items-center w-fit h-full bg-red-600 py-1.5 px-2.5 rounded-lg">
-                                        <span class="text-white text-sm font-semibold">SALE</span>
+                                        <span class="text-xs md:text-sm text-white font-semibold">SALE</span>
                                     </div>
                                 </div>
                             </a>
@@ -333,8 +333,8 @@ onBeforeUnmount(() => {
                                         <span v-if="product.sale" class="font-normal text-sm text-gray-400 line-through pt-0.5">${{ product.price_initial }}</span>
                                     </div>
                                 </div>
-                                <button class="block h-fit bg-gray-800 rounded-lg p-4 cursor-pointer hover:bg-gray-800/95 transition-colors">
-                                    <svg class="size-5 fill-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                                <button class="block h-fit bg-gray-800 rounded-lg p-2 md:p-3 cursor-pointer hover:bg-gray-800/95 transition-colors">
+                                    <svg class="size-4 md:size-5 fill-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
                                         <path d="M0 24C0 10.7 10.7 0 24 0L69.5 0c22 0 41.5 12.8 50.6 32l411 0c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3l-288.5 0 5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5L488 336c13.3 0 24 10.7 24 24s-10.7 24-24 24l-288.3 0c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5L24 48C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"/>
                                     </svg>
                                 </button>
